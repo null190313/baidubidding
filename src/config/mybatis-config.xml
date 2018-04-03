@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+<settings>
+	<setting name="logImpl" value="LOG4J"/>
+	<setting name="cacheEnabled" value="true"/>
+</settings>
+<typeAliases>
+	<typeAlias type="com.hp.bean.UserBean" alias="User"/>
+	<typeAlias type="com.hp.bean.KWTypeBean" alias="Type"/>
+	<typeAlias type="com.hp.bean.WebpageBean" alias="Webpage"/>
+</typeAliases>
+  <mappers>
+  	<mapper resource="com/hp/mapper/UserMapper.xml"/>
+  	<mapper resource="com/hp/mapper/TypeMapper.xml"/>
+  	<mapper resource="com/hp/mapper/WebpageMapper.xml"/>
+  </mappers>
+</configuration>
