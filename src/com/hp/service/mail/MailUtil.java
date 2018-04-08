@@ -55,10 +55,10 @@ public class MailUtil {
 			message.setContent("用户"+to+"你的验证码是："+authCode,"text/html;charset=UTF-8");
 			Transport.send(message);
 		} catch (AddressException e) {
-			// TODO Auto-generated catch block
+			System.out.println("AddressException");
 			e.printStackTrace();
 		} catch (MessagingException e) {
-			// TODO Auto-generated catch block
+			System.out.println("MessagingException");
 			e.printStackTrace();
 		}
 		return authCode;

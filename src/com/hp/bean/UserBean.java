@@ -1,6 +1,8 @@
 package com.hp.bean;
 
-public class UserBean {
+import java.io.Serializable;
+
+public class UserBean  implements Serializable{
 	private Integer uid;
 	private String uname;
 	private String upwd;

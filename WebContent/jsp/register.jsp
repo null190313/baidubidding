@@ -22,15 +22,16 @@
 <div>
 	<img alt="logo" src="../img/baidu.gif" style="margin-left: 200px">
 	<img src="../img/logo.png"/>
-	<span style="margin-left: 43%">我已注册现在就<a href="#">登陆</a></span>
+	<span style="margin-left: 43%">我已注册现在就<a href="login">登陆</a></span>
 </div>
 <h1 align="center"><img src="../img/reg_hr.png"></h1>
 
-<form action="">
+<form action="../user/register"  onsubmit="return checkUser(this)" method="post">
 	<table align="center">
 		<tr>
 			<th>用户名</th>
-			<th><input type="text" name="uname"></th>
+			<th><input id="uname" onblur="getUser(1)" type="text" name="uname"></th>
+			<th id="u_n"></th>
 		</tr>
 		<tr>
 			<th>公司名称</th>
@@ -42,15 +43,17 @@
 		</tr>
 		<tr>
 			<th>密码</th>
-			<th><input type="password" name="upwd"></th>
+			<th><input id="pwd1" type="password" name="upwd"></th>
 		</tr>
 		<tr>
 			<th>确认密码</th>
-			<th><input type="password"></th>
+			<th><input id="pwd2" onblur="getUser(2)" type="password"></th>
+			<th id="u_p2"></th>
 		</tr>
 		<tr>
 			<th>邮箱</th>
-			<th><input id="ueamil" type="text" name="ueamil"></th>
+			<th><input id="ueamil" type="text" name="ueamil" onblur="getUser(3)"></th>
+			<th id="u_e"></th>
 		</tr>
 		<tr>
 			<th>验证码</th>
@@ -74,8 +77,7 @@
 			data: {to:$('#ueamil').val()},
 			dataType: "json",
 			success: function (date) {
-				codes=date.code
-				alert(codes)
+				codes=date.code;
 			},
 			error: function () {
 				alert("error")
@@ -97,6 +99,83 @@
 			$('#code_').removeAttr("disabled");
 			clearTimeout(time)
 			i=60;
+		}
+	}
+
+	function getUser(id) {
+		var judje=0;
+		var boo=false;
+		if(id==1){
+			judje=$('#uname').val();
+			boo=true;
+		}else if(id==3){
+			judje=$('#ueamil').val();
+			boo=true;
+		}else{
+			if($('#pwd1').val()!=$('#pwd2').val()){
+				$('#u_p2').text("两次输入密码不一致")
+			}
+		}
+		if(boo){
+			$.ajax({
+				type: "POST",
+				url: "../user/checkUser",
+				data: {id:id,judje:judje} ,
+				dataType: "json",
+				success: function (date) {
+					if(date.text!=null){
+						if(id==1){
+							$('#u_n').text(date.text);
+						}else{
+							$('#u_e').text(date.text)
+						}
+					}else{
+						if(id==1){
+							$('#u_n').text("");
+						}else{
+							$('#u_e').text("")
+						}
+					}
+				},
+				error: function () {
+					alert("error")
+				}
+			});
+		}
+		
+	}
+
+	function checkUser(thisfrom) {
+		with(thisfrom){
+			if($('#u_n').text()!='' && uname.value==''){
+				alert('请检查信息是否输入正确');
+				return false;
+			}
+			if(ucompany.value==''){
+				alert('请检查信息是否输入正确');
+				return false;
+			}
+			if(utfn.value==''){
+				alert('请检查信息是否输入正确');
+				return false;
+			}
+			if(upwd.value==''){
+				alert('请检查信息是否输入正确');
+				return false;
+			}
+			if($('#pwd2').val()=='' && $('#u_p2').text()!=''){
+				alert('请检查信息是否输入正确');
+				return false;
+			}
+			if(ueamil.value==''){
+				alert('请检查信息是否输入正确');
+				return false;
+			}
+			if($('#code_').val()=='' && $('#code_').val()!=codes){
+				alert(true)
+				return false;
+			}
+			return true;
 		}
 	}
 	

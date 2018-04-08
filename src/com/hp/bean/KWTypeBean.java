@@ -1,6 +1,8 @@
 package com.hp.bean;
 
-public class KWTypeBean {
+import java.io.Serializable;
+
+public class KWTypeBean implements Serializable{
 	private Integer kwtid;
 	private String kwttype;
 	public Integer getKwtid() {

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import com.hp.bean.UserBean;
 import com.hp.service.LoginService;
+import com.hp.service.RegisterService;
 import com.hp.service.mail.MailUtil;
 
 @Controller
@@ -19,6 +20,8 @@ public class UserController {
 	
 	@Autowired
 	private LoginService loginService;
+	@Autowired
+	private RegisterService registerService;
 	
 	//Ìø×ªlogin.jspÒ³Ãæ
 	@RequestMapping("/login")
@@ -38,10 +41,14 @@ public class UserController {
 		return "login";
 	}
 	
-	@RequestMapping("/register")
+	@RequestMapping(value="/register",method=RequestMethod.POST)
 	public String register(UserBean registerUser) {
-		
-		return "login";
+		boolean boo = registerService.registerUser(registerUser);
+		if(boo) {
+			return "login";
+		}else {
+			return "register";
+		}
 	}
 	
 	@Autowired
@@ -52,6 +59,15 @@ public class UserController {
 	public ModelMap sendAuthCode(String to) {
 		ModelMap model=new ModelMap();
 		model.put("code", mailutil.send_mail(to));
+		return model;
+	}
+	
+	@RequestMapping(value="/checkUser",method=RequestMethod.POST)
+	@ResponseBody
+	public ModelMap checkUser(int id,String judje) {
+		System.out.println(id+judje);
+		ModelMap model=new ModelMap();
+		model.put("text", registerService.checkUser(judje, id));
 		return model;
 	}
 	

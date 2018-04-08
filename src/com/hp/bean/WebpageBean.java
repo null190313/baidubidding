@@ -1,6 +1,8 @@
 package com.hp.bean;
 
-public class WebpageBean {
+import java.io.Serializable;
+
+public class WebpageBean  implements Serializable{
 	private Integer wid;
 	private UserBean user; 
 	private KWTypeBean type;
